@@ -1,0 +1,19 @@
+<div class="sidebar ">
+  <h2>Recent Posts</h2>
+  <ul>
+    {% for post in posts %}
+    <li><a href="{{ url_for('home') }}">{{ post.title }}</a></li>
+    {% endfor %}
+  </ul>
+</div>
+
+<div class="sidebar">
+  <h2>Tags</h2>
+  <ul class="sideBarTags">
+    {% for tag in posts.tags %}
+    <li>
+      <a href="{{ url_for('home') }}" data-toggle="tooltip" data-placement="right" title="{{ tag.size }}">
+        <span>{{ tag }}</span></a></li>
+    {% endfor %}
+  </ul>
+</div>

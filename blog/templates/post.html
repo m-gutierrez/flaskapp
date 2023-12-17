@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+
+
+{% block content %}
+  <h1><a href="link_to_post">{{ page.title }}</a></h1>
+    <div class="post-meta">
+      <div class="post-time">
+        <i class="fa fa-calendar"></i>
+        <time>{{ page.date }}</time>
+      </div>
+      <ul>
+        {% for tag in page.tags %}
+          <li><a href="link_to_tags">{{ tag }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+    <div class="post-content">
+      <div id="toc" class="toc"></div>
+       {{ page.html | safe }}
+    </div>
+
+
+{% endblock %}

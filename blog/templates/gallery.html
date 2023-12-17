@@ -1,0 +1,6 @@
+<div class="gallery masonry-gallery">
+
+{% for key,item in gal.items() %}
+    {{ gallery_item(item) | safe }}
+{% endfor %}
+</div>

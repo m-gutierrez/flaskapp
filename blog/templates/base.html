@@ -1,0 +1,113 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <!-- Bootstrap Core CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+
+  <!-- codehilite -->
+  <link rel="stylesheet" href="{{ url_for('pygments_css') }}">
+
+
+  <!-- Custom CSS -->
+  <link href="{{ url_for('static', filename='css/theme.css') }}" rel="stylesheet">
+  <link href="{{ url_for('static', filename='css/syntax.css') }}" rel="stylesheet">
+  <link href="{{ url_for('static', filename='css/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet">
+  <!-- Magnific Popup core CSS file -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/magnific-popup.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/galleries.css') }}">
+
+
+  <link href="{{ url_for('static', filename='/images/site-icon.png') }}" rel="icon" type="image/x-icon">
+
+  <meta charset="UTF-8">
+  <title>{{ title }}</title>
+  <meta name="theme-color" content="#222222" >
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+  <body>
+    {% include 'header.html' %}
+    <div class="wrapper">
+      <div class="content">
+        <div class="container container-center">
+          <div class="row">
+            <div class="col-md-8">
+              <div class="well">
+                {% block content %}{% endblock %}
+              </div>
+            </div>
+            <div class="col-md-2 hidden-xs">
+              {% include 'sidebar.html' %}
+            </div>
+          </div>
+        </div>
+      </div>
+      TEST_FOOTER
+    </div>
+
+
+  <!-- jQuery 1.7.2+ or Zepto.js 1.0+ -->
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+  <!-- custom -->
+  <script src="{{ url_for('static', filename='js/header.js') }}"></script>
+
+  <!-- Magnific Popup core JS file -->
+  <script src="{{ url_for('static', filename='js/magnific-popup.js') }}"></script>
+
+  <!-- bootstrap -->
+  <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+
+  <!-- pattern gallery images -->
+  <script src="https://unpkg.com/isotope-layout@3/dist/isotope.pkgd.min.js"></script>
+
+
+  <!-- image loader scripts -->
+  <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+
+
+  <!-- mathjax -->
+  <script type="text/javascript"
+        src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  </script>
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      TeX: {
+        equationNumbers: {
+          autoNumber: "AMS"
+        }
+      },
+      tex2jax: {
+        inlineMath: [ ['$','$']],
+        processEscapes: true
+      }
+    });
+  </script>
+
+
+
+  <!-- Initilize Magnific -->
+  <script type="text/javascript">
+        $(document).ready(function($) {
+          $('a.popup').magnificPopup({
+           type: 'image',
+      gallery:{
+           enabled:true,
+           navigateByImgClick: true,
+           preload: [0,1] // Will preload 0 - before current, and 1 after the current image
+            },
+      image: {
+        titleSrc: function(item) {
+              return item.el.attr('title') + '&nbsp;' + item.el.attr('data-caption');
+              }
+            }
+            // other options
+        });
+  });
+      </script>
+  </body>
+</html>
+
+
+
+

@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+  {% for post in posts %}
+  <h2 class="post-title">
+    <a href="{{ url_for('post', name=post.path) }}">
+      <img src="{{ get_thumbnail(post.meta.post_image) }}"/>
+      <span> {{ post.meta.title }} </span>
+    </a>
+  </h2>
+
+  <div class="post-meta">
+    <div class="post-time">
+    <i class="fa fa-calendar"></i>
+    <time datetime="{{ post.meta.date }}">{{ post.meta.date }}</time>
+    </div>
+
+    <ul>
+      {% for tag in post.meta.tags %}
+      <li><a href="link_to_tag_sorts">{{ tag }}</a></li>
+      {% endfor %}
+    </ul>
+  </div>
+
+
+  {% endfor %}
+
+
+
+{% endblock %}
