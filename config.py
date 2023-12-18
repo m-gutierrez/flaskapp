@@ -19,7 +19,7 @@ class Config:
 
     SECRET_KEY = 'you-will-never-guess'
     
-    FLATPAGES_ROOT='posts'
+    FLATPAGES_ROOT='blog/posts'
     FLATPAGES_EXTENSION = '.md'
     FLATPAGES_HTML_RENDERER = my_renderer
     FLATPAGES_MARKDOWN_EXTENSIONS= ['fenced_code']

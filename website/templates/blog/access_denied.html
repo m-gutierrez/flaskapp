@@ -1,12 +1,12 @@
-{% extends "base.html" %}
+{% extends "blog/base.html" %}
 
 
 {% block content %}
-  <h1 class="post-title">Access Denied  </h1>
+  <h1 class="post-title"> Access Denied  </h1>
 
     {% if user.is_authenticated %}
       <p>Hello, {{user.name}}! Please message me from your email ({{user.email}}) to request access.
     {% else %}
-  <a href="{{ url_for('login') }}">Please Log in</a> 
+  <p>Please Log in</p> 
     {% endif %}
 {% endblock %}

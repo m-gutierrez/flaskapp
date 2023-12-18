@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "blog/base.html" %}
 
 
 {% block content %}
@@ -9,12 +9,10 @@
       <p> Google Profile Pic: </p>
       <img src="{{user.picture}}", alt="Google profile pic"></img>
     </div>
-    <a class="button" href="{{ url_for('logout') }}">LOGOUT</a>
+    <a class="button" href="{{ url_for('auth.logout') }}">LOGOUT</a>
     {% else %}
     <div>
-    <p>Please Log in:
-<button onclick="location.href='{{ url_for('login') }}'" type="button">
-         www.example.com</button> </p>
+    <p>Please Log in: </p>
     </div>
 
     {% endif %}

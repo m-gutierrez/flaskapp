@@ -2,7 +2,7 @@ from datetime import datetime, timezone
 from typing import Optional
 import sqlalchemy as sa
 import sqlalchemy.orm as so
-from blog import db, login_manager
+from website import db, login_manager
 from flask_login import UserMixin
 from enum import Enum
 

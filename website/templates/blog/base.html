@@ -6,7 +6,7 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
 
   <!-- codehilite -->
-  <link rel="stylesheet" href="{{ url_for('pygments_css') }}">
+  <link rel="stylesheet" href="{{ url_for('blog.pygments_css') }}">
 
 
   <!-- Custom CSS -->
@@ -26,7 +26,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
   <body>
-    {% include 'header.html' %}
+    {% include 'blog/header.html' %}
     <div class="wrapper">
       <div class="content">
         <div class="container container-center">
@@ -37,7 +37,7 @@
               </div>
             </div>
             <div class="col-md-2 hidden-xs">
-              {% include 'sidebar.html' %}
+              {% include 'blog/sidebar.html' %}
             </div>
           </div>
         </div>

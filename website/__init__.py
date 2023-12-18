@@ -2,25 +2,33 @@ from flask import Flask
 from flask_flatpages import FlatPages
 from config import Config
 from flask_login import LoginManager
-from oauthlib.oauth2 import WebApplicationClient
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 app.config.from_object(Config)
 
 # initialize the app with the extension
-db = SQLAlchemy(app)
+db = SQLAlchemy()
+db.init_app(app)
 
 # Flat pages for blog posts
-pages = FlatPages(app)
+pages = FlatPages()
 
+pages.init_app(app)
 
 # User session management setup
 login_manager = LoginManager()
 login_manager.init_app(app)
-
-# OAuth 2 client setup for google-sign-in
-client = WebApplicationClient(Config.GOOGLE_OAUTH_CLIENT_ID)
+login_manager.login_view= 'auth.login'
 
 
-from blog import routes, jinja_ext, auth
+from website.auth import bp as auth_bp
+app.register_blueprint(auth_bp, url_prefix='/auth')
+
+from website.blog import bp as blog_bp
+app.register_blueprint(blog_bp, url_prefix='/blog')
+
+
+
+
+from website import routes, jinja_ext

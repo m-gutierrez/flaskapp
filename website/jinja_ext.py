@@ -1,4 +1,4 @@
-from blog import app
+from website import app
 import html
 from flask import render_template
 
@@ -25,7 +25,7 @@ def gallery_item():
 			gallery_item["google_url"].split('=',1)[0]+"=w550"
 
 		rv=render_template(
-			"gallery_img.html", item=gallery_item)
+			"galleries/gallery_img.html", item=gallery_item)
 		return rv
 	return dict(gallery_item=_gallery_item)
 
@@ -34,6 +34,6 @@ def gallery_item():
 def gallery():
 	def _gallery(gal={}):
 		rv=render_template(
-			"gallery.html", gal=gal)
+			"galleries/gallery.html", gal=gal)
 		return rv
 	return dict(gallery=_gallery)

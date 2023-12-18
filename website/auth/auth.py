@@ -1,46 +1,31 @@
 from flask import render_template, request, redirect, url_for
-import requests
-from blog import app, client, Config, login_manager, db
+from website import app, login_manager, db
 import os
-from blog.models import AUTH, User, LogIns
 import json
+import requests
+from oauthlib.oauth2 import WebApplicationClient
+from website.models import AUTH, User, LogIns
 from flask_login import (
         current_user,
         login_required,
         login_user,
-        logout_user,
-        UserMixin
+        logout_user
 )
+from website.auth import bp
 
-
-# class User(UserMixin):
-#     def __init__(self, id_, name, email, profile_pic, auth):
-#         self.id = id_
-#         self.name = name
-#         self.email = email
-#         self.profile_pic = profile_pic
-#         self.auth = auth
-
-#     @staticmethod
-#     def get(user_id):
-#         if user_id in USER:
-#             return USER[user_id]
-#         else:
-#             return None
-
-
-# USER = {"1": User(1, 'test', 'email', 'pic', AUTH.PUBLIC)}
+# OAuth 2 client setup for google-sign-in
+client = WebApplicationClient(app.config["GOOGLE_OAUTH_CLIENT_ID"])
 
 
 @login_manager.user_loader
 def load_user(id):
     return User.get(id)
 
-@app.route('/login')
+@bp.route('/login')
 def login():
     # find out what url to hit for google login
     google_provider_cfg = requests.get(
-        Config.GOOGLE_DISCOVERY_URL).json()
+        app.config["GOOGLE_DISCOVERY_URL"]).json()
     authorization_endpoint = google_provider_cfg["authorization_endpoint"]
 
     # use library to construct the request for google login and provide
@@ -51,33 +36,18 @@ def login():
         scope=["openid", "email", "profile"])
 
     return render_template(
-        'login.html', user=current_user, posts={}, login_uri=request_uri)
+        'auth/login.html', user=current_user, posts={}, login_uri=request_uri)
 
 
-@app.route('/login_link')
-def login_link():
-    # find out what url to hit for google login
-    google_provider_cfg = requests.get(Config.GOOGLE_DISCOVERY_URL).json()
-    authorization_endpoint = google_provider_cfg["authorization_endpoint"]
-
-    # use library to construct the request for google login and provide
-    # scopes that let you retreive users profile from google
-    request_uri = client.prepare_request_uri(
-        authorization_endpoint,
-        redirect_uri=f'{request.base_url}/callback',
-        scope=["openid", "email", "profile"])
-
-    return request_uri
-
-
-@app.route("/login/callback")
+@bp.route("/login/callback")
 def login_callback():
     # Get authorization code Google sent back to you
     code = request.args.get("code")
 
     # Find out what URL to hit to get tokens that allow you to ask for
     # things on behalf of a user
-    google_provider_cfg = requests.get(Config.GOOGLE_DISCOVERY_URL).json()
+    google_provider_cfg = requests.get(
+        app.config["GOOGLE_DISCOVERY_URL"]).json()
     token_endpoint = google_provider_cfg["token_endpoint"]
 
     token_url, headers, body = client.prepare_token_request(
@@ -91,11 +61,12 @@ def login_callback():
             token_url,
             headers=headers,
             data=body,
-            auth=(Config.GOOGLE_OAUTH_CLIENT_ID, 
-                Config.GOOGLE_OAUTH_CLIENT_SECRET))
+            auth=(app.config["GOOGLE_OAUTH_CLIENT_ID"], 
+                app.config["GOOGLE_OAUTH_CLIENT_SECRET"]))
 
     # Parse the tokens!
-    client.parse_request_body_response(json.dumps(token_response.json()))
+    client.parse_request_body_response(
+        json.dumps(token_response.json()))
 
     # Now that you have tokens (yay) let's find and hit the URL
     # from Google that gives you the user's profile information,
@@ -104,7 +75,6 @@ def login_callback():
     uri, headers, body = client.add_token(userinfo_endpoint)
     userinfo_response = requests.get(uri, headers=headers, data=body)
 
-    print(userinfo_response.json())
     # You want to make sure their email is verified.
     # The user authenticated with Google, authorized your
     # app, and now you've verified their email through Google!
@@ -118,7 +88,6 @@ def login_callback():
 
     # Create a user in your db with the information provided
     # by Google
-
     user = User(
         id=unique_id,
         username=users_name,
@@ -126,6 +95,7 @@ def login_callback():
         picture=picture,
         auth=AUTH.PUBLIC
     )
+
     sign_in(user)
     # Begin user session by logging the user in
     login_user(user)
@@ -135,7 +105,7 @@ def login_callback():
     return redirect(url_for("home"))
 
 
-@app.route("/logout")
+@bp.route("/logout")
 @login_required
 def logout():
     logout_user()
@@ -144,16 +114,17 @@ def logout():
 
 
 def sign_in(user):
-
+    # check if user exists in database
     dbuser = User.get(user.id)
     if dbuser:
-        print('User exists, updating db')
+        # update database user with current sign on info
         dbuser.username=user.username
         dbuser.email = user.email
         dbuser.picture = user.picture
     else:
-        print('New user, adding to db')
+        # add new user to data base
         db.session.add(user)
+    # add login timestamp for user
     login = LogIns(user_id=user.id)
     db.session.add(login)
     db.session.commit()
