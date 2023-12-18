@@ -1,8 +1,10 @@
-from website import app
+from website.blog import bp
 import html
 from flask import render_template
 
-@app.context_processor
+
+
+@bp.context_processor
 def get_thumbnail():
     def _get_thumbnail(google_url):
         link = google_url.split('=',1)[0]+"=w100"
@@ -10,7 +12,7 @@ def get_thumbnail():
     return dict(get_thumbnail=_get_thumbnail)
 
 
-@app.context_processor
+@bp.context_processor
 def get_inline():
     def _get_inline(google_url):
         link = google_url.split('=',1)[0]+"=w480"
@@ -18,7 +20,7 @@ def get_inline():
     return dict(get_inline=_get_inline)
 
 
-@app.context_processor
+@bp.context_processor
 def gallery_item():
     def _gallery_item(gallery_item={}):
         gallery_item["inline_link"]=\
@@ -30,7 +32,7 @@ def gallery_item():
     return dict(gallery_item=_gallery_item)
 
 
-@app.context_processor
+@bp.context_processor
 def gallery():
     def _gallery(gal={}):
         rv=render_template(

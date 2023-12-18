@@ -1,5 +1,9 @@
-from flask import render_template, request, redirect, url_for
-from website import app, login_manager, db
+from flask import render_template
+from flask import request
+from flask import redirect
+from flask import url_for
+from flask import current_app
+from website import db
 import os
 import json
 import requests
@@ -13,19 +17,17 @@ from flask_login import (
 )
 from website.auth import bp
 
-# OAuth 2 client setup for google-sign-in
-client = WebApplicationClient(app.config["GOOGLE_OAUTH_CLIENT_ID"])
 
-
-@login_manager.user_loader
-def load_user(id):
-    return User.get(id)
 
 @bp.route('/login')
 def login():
+    # OAuth 2 client setup for google-sign-in
+    client = WebApplicationClient(
+    current_app.config["GOOGLE_OAUTH_CLIENT_ID"])
+
     # find out what url to hit for google login
     google_provider_cfg = requests.get(
-        app.config["GOOGLE_DISCOVERY_URL"]).json()
+        current_app.config["GOOGLE_DISCOVERY_URL"]).json()
     authorization_endpoint = google_provider_cfg["authorization_endpoint"]
 
     # use library to construct the request for google login and provide
@@ -41,13 +43,18 @@ def login():
 
 @bp.route("/login/callback")
 def login_callback():
+    # OAuth 2 client setup for google-sign-in
+    client = WebApplicationClient(
+    current_app.config["GOOGLE_OAUTH_CLIENT_ID"])
+
+
     # Get authorization code Google sent back to you
     code = request.args.get("code")
 
     # Find out what URL to hit to get tokens that allow you to ask for
     # things on behalf of a user
     google_provider_cfg = requests.get(
-        app.config["GOOGLE_DISCOVERY_URL"]).json()
+        current_app.config["GOOGLE_DISCOVERY_URL"]).json()
     token_endpoint = google_provider_cfg["token_endpoint"]
 
     token_url, headers, body = client.prepare_token_request(
@@ -61,8 +68,8 @@ def login_callback():
             token_url,
             headers=headers,
             data=body,
-            auth=(app.config["GOOGLE_OAUTH_CLIENT_ID"], 
-                app.config["GOOGLE_OAUTH_CLIENT_SECRET"]))
+            auth=(current_app.config["GOOGLE_OAUTH_CLIENT_ID"], 
+                current_app.config["GOOGLE_OAUTH_CLIENT_SECRET"]))
 
     # Parse the tokens!
     client.parse_request_body_response(
@@ -100,16 +107,15 @@ def login_callback():
     # Begin user session by logging the user in
     login_user(user)
 
-    print(user)
     # Send user back to homepage
-    return redirect(url_for("home"))
+    return redirect(url_for("main.home"))
 
 
 @bp.route("/logout")
 @login_required
 def logout():
     logout_user()
-    return redirect(url_for("home"))
+    return redirect(url_for("main.home"))
 
 
 

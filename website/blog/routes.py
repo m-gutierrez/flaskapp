@@ -1,5 +1,7 @@
-from flask import render_template, redirect, url_for
-from website import app, pages
+from flask import render_template
+from flask import redirect
+from flask import url_for
+from website import pages
 import os
 import json
 from flask_login import current_user

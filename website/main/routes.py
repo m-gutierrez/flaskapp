@@ -1,12 +1,13 @@
-from flask import render_template, redirect, url_for
+from flask import render_template
 from flask_login import current_user
-from website import app
+from website.main import bp
 
-@app.route('/')
+@bp.route('/')
+@bp.route('/home')
 def home():
     return render_template('home.html', user=current_user, posts={})
 
 
-@app.route('/about')
+@bp.route('/about')
 def about():
     return render_template('about.html', user=current_user, posts={})

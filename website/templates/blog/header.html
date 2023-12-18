@@ -6,13 +6,13 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="{{ url_for('home') }}">MG</a>
+      <a class="navbar-brand" href="{{ url_for('main.home') }}">MG</a>
     </div>
     <div class="collapse navbar-collapse">
       <ul class="nav navbar-nav">
-        <li><a href="{{ url_for('home') }}">home</a></li>
+        <li><a href="{{ url_for('main.home') }}">home</a></li>
         <li><a href="{{ url_for('blog.home') }}">blog</a></li>
-        <li><a href="{{ url_for('about') }}">about</a></li>
+        <li><a href="{{ url_for('main.about') }}">about</a></li>
         {% if user.is_authenticated %}
           <li><a href="{{ url_for('auth.logout') }}">logout</a></li>
           <li><img src="{{user.picture}}", alt="Google profile pic"></img></li>

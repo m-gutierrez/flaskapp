@@ -6,7 +6,6 @@ from website import db, login_manager
 from flask_login import UserMixin
 from enum import Enum
 
-
 class AUTH(Enum):
     ME = 1
     SELECT = 2
@@ -14,7 +13,9 @@ class AUTH(Enum):
     FRIENDS = 4
     PUBLIC = 5
 
-
+@login_manager.user_loader
+def load_user(id):
+    return User.get(id)
 
 class User(UserMixin, db.Model):
     id: so.Mapped[str] = so.mapped_column(sa.String(64),primary_key=True, unique=True)
