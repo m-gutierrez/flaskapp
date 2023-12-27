@@ -1,0 +1,32 @@
+<div class='recipe'>
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Ingredient</th>
+      <th scope="col">Measurement</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for item in details.ingredients %}
+    <tr>
+        {% for elem in item %}
+      <th scope="col">{{elem}}</th>
+        {% endfor %}
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+</div>
+<div class='prep'>
+<table class="table">
+
+  <tbody>
+    {% for item in details.preperation %}
+    <tr>
+      <td>{{item}}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+</div>

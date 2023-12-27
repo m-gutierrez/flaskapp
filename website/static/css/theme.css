@@ -356,3 +356,32 @@ nav.shrink .navbar-toggle {
 .codehilite pre{
   padding: 1em;
 }
+
+
+.recipe {
+  width: 75%;
+  border:1px solid black;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 1em;
+  padding: 1em;
+}
+
+.prep table {
+  width: 90%;
+  margin: 1em;
+  counter-reset: rowNumber;
+  border: None;
+}
+.prep .table td{
+  border: None;
+  padding: 0;
+}
+
+.prep .table tr::before {
+  display: table-cell;
+  counter-increment: rowNumber;
+  content: counter(rowNumber) ".";
+  text-align: right;
+  padding: 0 1em 1em 1em;
+}

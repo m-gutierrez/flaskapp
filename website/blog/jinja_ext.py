@@ -39,3 +39,10 @@ def gallery():
             "galleries/gallery.html", gal=gal)
         return rv
     return dict(gallery=_gallery)
+
+
+@bp.context_processor
+def recipe():
+    def _recipe(details={}):
+        return render_template('recipe.html', details=details)
+    return dict(recipe=_recipe)
