@@ -14,6 +14,7 @@ def my_renderer(text, fp, page):
 
 class Config:
 
+    PREFERRED_URL_SCHEME = 'https'
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
         'sqlite:///' + os.path.join(BASEDIR, 'blog_test.db')
 

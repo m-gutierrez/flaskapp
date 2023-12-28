@@ -38,7 +38,9 @@ def create_app(config_class=Config):
     from website.main import bp as main_bp
     app.register_blueprint(main_bp)
 
+    from werkzeug.middleware.proxy_fix import ProxyFix
 
+    app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1 ,x_proto=1)
 
     return app
 
