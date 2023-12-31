@@ -1,9 +1,10 @@
 import os
 from flask import Flask, render_template_string
 from flask_flatpages import pygmented_markdown
-import markdown
+from dotenv import load_dotenv
 
 BASEDIR = os.path.abspath(os.path.dirname(__file__))
+load_dotenv(os.path.join(basedir, '.env'))
 
 
 def my_renderer(text, fp, page):
