@@ -1,5 +1,6 @@
 title: Uh oh
 date: 2018-05-01
+permissions: ME
 tags:
  - mountains
  - cooking
